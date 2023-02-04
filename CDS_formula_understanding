@@ -1,0 +1,181 @@
+% % % LSA PROCEEDINGS TEMPLATE % % %
+% % %       version 2.3        % % %   
+%%% REVISION HISTORY
+% (v. 1) Created by Sarah E. Murray, 24 April 2017 based on the LSA's stylesheet, which is available at http://journals.linguisticsociety.org/proceedings/index.php/PLSA/pages/view/instructions
+% (v. 1.2) Revised by Patrick Farrell, February 1, 2019 and February 25, 2022.
+% (v. 2) Further revised by Daniil M. Ozernyi, April 16, 2022.
+% (v. 2.1) Submitted to Overleaf by Daniil M. Ozernyi on April 16, 2022; June 4, 2022.
+% (v. 2.2) further revised by DMO and PF 6/3-7/2022, submitted to Overleaf
+% (v. 2.3) minor revisions by DMO
+
+\documentclass[12pt,letterpaper]{article}	
+\UseRawInputEncoding
+% PERSONAL PACKAGES [add below] 
+\usepackage{expex,marvosym,tabularray,xcolor}
+
+%%% LSA LAYOUT AND PACKAGES
+\usepackage{times} %obsolete, but works for the font and style
+\usepackage{tipa}
+\usepackage{natbib}
+ 	\setcitestyle{semicolon,aysep={},yysep={,},notesep={:}}
+ 	%see below for instructions on natbib bibliography
+
+\usepackage{lipsum} % this and the following package and the settings beneath them are for maintaining indentation and still having ragged-right alignmnent
+\usepackage{ragged2e}
+\setlength\RaggedRightParindent{0.3in}
+\RaggedRight
+
+\usepackage{scrextend} % this package and the following settings are for the footnote formatting
+\deffootnote[.5em]{0em}{1em}{\textsuperscript{\thefootnotemark}\,}
+
+\newcounter{savefootnote}   % these settings allow the use of an asterisk as a footnote label (for the author line below the title.
+\newcounter{symfootnote}
+\newcommand{\symfootnote}[1]{%
+   \setcounter{savefootnote}{\value{footnote}}%
+   \setcounter{footnote}{\value{symfootnote}}%
+   \ifnum\value{footnote}>8\setcounter{footnote}{0}\fi%
+   \let\oldthefootnote=\thefootnote%
+   \renewcommand{\thefootnote}{\fnsymbol{footnote}}%
+   \footnote{#1}%
+   \let\thefootnote=\oldthefootnote%
+   \setcounter{symfootnote}{\value{footnote}}%
+   \setcounter{footnote}{\value{savefootnote}}%
+}
+
+\usepackage[labelsep=period]{caption}
+
+\usepackage[margin=1.0in]{geometry}
+\usepackage[compact]{titlesec}
+	\titleformat{\section}[runin]{\normalfont\bfseries}{\thesection.}{.5em}{}[.]
+	\titleformat{\subsection}[runin]{\normalfont\scshape}{\thesubsection.}{.5em}{}[.]
+	\titleformat{\subsubsection}[runin]{\normalfont\scshape}{\thesubsubsection.}{.5em}{}[.]
+%\usepackage[usenames,dvipsnames]{color}	
+\usepackage[colorlinks,allcolors={black},urlcolor={blue}]{hyperref} 
+
+%%% PERSONAL DEFINITIONS (if needed)
+
+%%% LSA DEFINITIONS
+
+% for the abstract
+% Abstracts have to be 12pt, indented 1.4 inches on each side, and inline with the label
+\renewenvironment{abstract}{%
+\noindent\begin{minipage}{1\textwidth}
+\setlength{\leftskip}{0.4in}
+\setlength{\rightskip}{0.4in}
+\textbf{Abstract.}}
+{\end{minipage}}
+
+% keywords environment
+\newenvironment{keywords}{%
+\vspace{.5em}
+\noindent\begin{minipage}{1\textwidth}
+\setlength{\leftskip}{0.4in}
+\setlength{\rightskip}{0.4in}
+\textbf{Keywords.}}
+{\end{minipage}}
+
+%%% MAIN DOCUMENT
+\begin{document} 
+
+%%If using linguex, need the following commands to get correct LSA style spacing
+%% these have to be after  \begin{document}
+%\setlength{\Extopsep}{6pt}
+%\setlength{\Exlabelsep}{9pt} %effect of 0.4in indent from left text edge
+
+%title and author lines
+\begin{center}
+\normalfont\bfseries
+CDS pricing formula: A probabilistic understanding
+\vskip .5em
+\normalfont
+{Jingxiang Zou\symfootnote{BU msmft candidate 2024}}
+\vskip .5em
+\end{center}
+
+
+This short article provides a probabilistic view in to the pricing formula of Credit Default Swap.
+
+We assume that credit event can happen at any arbitrary time within $(t_0, t_N)$. 
+
+Define $t^*$ to be the time of the CDS default.
+
+
+Define $ f(t) $ to be the probability density function that credit event happens at time t.
+
+
+Define $P(t_n)$ to be the probability that the credit event does not happen from inception till time $t_n$, then we have 
+\[
+   Prob[t^* \in (t_{n-1}, t_n)] = \int_{t_{n-1}}^{t_n}f(t)\,\mathrm{d}t = P(t_{n-1}) - P(t_n)
+   \]
+
+Please be aware that $f(t)$ is the derivative of $-P(t)$.
+
+We first consider the protection leg of the CDS formula. The $t_0$ - expectation of the 'protection' the seller of CDS is providing is essentially the discounted expected value of loss in a credit event.
+
+Define the rate of recovered value to be R. 
+
+Define $DF(t_n)$ to be the discount factor corresponding to time $t_n$. As we assumed, that credit event can happen at any arbitrary time within $(t_0, t_N)$, we can write the expected loss (as per \$ 1 nominal) as the following:
+\[ \int_{0}^{t_N}(1 - R)\cdot DF(t)\cdot f(t)\,\mathrm{d}t\] 
+
+
+If we overlook the difference among discount factors for all $t \in (t_{n-1}, t_n)$ and set their discount factors to be $DF(t_n)$, then the previous formula is equivalent to:
+\[ 
+\sum_{n=1}^{N} (1-R)\cdot DF(t_n)\cdot \int_{t_{n-1}}^{t_n}f(t)\,\mathrm{d}t\]
+which is equivalent to 
+\[
+\sum_{n=1}^{N} (1-R)\cdot DF(t_n)\cdot [P(t_{n-1}) - P(t_n)]
+\]
+which is exactly the protection leg of the CDS pricing formula.
+
+The premium leg is a little more complicated. It has two parts: the 'realized premium payments' and the 'unrealized premium'. In mathematical terms:
+
+Define $t_n, n = 1, 2, 3, 4...N$ to be the dates when premiums are supposed to be payed had there not been default previously. 
+
+Define $S^{(t_{i-1}, t_i)}, i = 1, 2, 3, 4...N$ to be the premium corresponding to the time interval $(t_{i-1}, t_i)$.
+
+Define $S^{(t_i, t^*)}$ to be the unrealized premium corresponding to time interval $(t_i, t^*)$.
+
+Define $\delta(t_{n-1}, t_n)$ to be the fraction of a year according to some day count convention.  
+
+The expected discounted value of the $t_n$realized premium payments equals the discounted value of the realized premium payments given $t^* > t_n$ multiplied by the probability of $t^* > t_n$, which is:
+\[
+\sum_{n=1}^{N} S^{(t_{n-1}, t_n)} \cdot  \delta(t_{n-1}, t_n)\cdot DF(t_n)\cdot Prob(t^* > t_n)
+\]
+which is equivalent to 
+\[
+\sum_{n=1}^{N} S^{(t_{n-1}, t_n)} \cdot  \delta(t_{n-1}, t_n)\cdot DF(t_n)\cdot \int_{t_n}^{t_N}f(t)\,\mathrm{d}t
+\]
+which is equivalent to 
+\[
+\sum_{n=1}^{N} S^{(t_{n-1}, t_n)} \cdot  \delta(t_{n-1}, t_n)\cdot DF(t_n)\cdot (P(t_n) - P(t_N))
+\]
+
+if we assume that, for a N that is large enough, $P(t_N)$ is close to zero and can be omitted, the previous formula is approximate to:
+
+\[
+\sum_{n=1}^{N} S^{(t_{n-1}, t_n)} \cdot  \delta(t_{n-1}, t_n)\cdot DF(t_n)\cdot P(t_n)
+\]
+
+We now discuss the 'unrealized premium payments', which refers to a fraction of the premium originally due at the nearest payment date which is never collected because of the default. It is analogous to part of the accumulated interest as a fraction of the next coupon payment, which is a part of the bond's dirty price. The unrealized premium is not trivial because the seller of the CDS is obliged to provide protection though out the time from inception till default (or maturity) instead of just till premium payment dates.
+
+The existence of the 'unrealized premium payments' is almost inevitable because it is not very likely that CDS defaults at exactly each premium payment dates.
+
+
+The expected discounted value of the unrealized premium payment that corresponds to the time interval (equals the discounted value of the realized premium payments given $t^* > t_n$ multiplied by the probability of $t^* > t_n$, which is:
+(given that $t\in (t_{n-1}, t_n)$)
+\[
+\sum_{n=1}^{N} S^{(t_{n-1}, t^*)} \cdot  \delta(t_{n-1}, t^*)\cdot DF(t_n)\cdot \int_{t_{n-1}}^{t_n}f(t^*)\,\mathrm{d}t^*
+\]
+
+if we assume that $\delta(t_{n-1}, t^*)$ is approximately half of the time interval $(t_{n-1}, t_n)$, then this formula is approximate to
+
+\[
+1/2 \cdot  \sum_{n=1}^{N} S^{(t_{n-1}, t^*)} \cdot  \delta(t_{n-1}, t^*)\cdot DF(t_n)\cdot (P(t_{n-1}) - P(t_n))
+\]
+
+The 'realized' and 'unrealized' part of the premium leg thus add up to 
+\[
+1/2 \cdot  \sum_{n=1}^{N} S^{(t_{n-1}, t^*)} \cdot  \delta(t_{n-1}, t^*)\cdot DF(t_n)\cdot (P(t_{n-1}) + P(t_n))
+\]
+which is the premium leg of the CDS pricing formula.
+\end{document}
